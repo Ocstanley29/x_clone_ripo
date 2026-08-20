@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const userschema=new mongoose.schema({
+const userschema = new mongoose.schema({
     clerckid:{
         type:String,
         required:true,
