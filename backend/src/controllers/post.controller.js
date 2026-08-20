@@ -77,7 +77,49 @@ export const likePost = asyncHandler(async (req ,res)=>{
     const {postId} = req.params;
     const user = await user.findOne({clerkId: userId});
     const post = await post.findById({postId});
+    if (!user || !popst) return res.status(400).json({error:"user not found"});
 
-    
 
-})
+    const isLiked = post.likes.include(user._Id);
+//unlike
+     if (isLiked){
+        await post.findOneAndUpdate(postId,{
+            $pull:{like:user.Id},
+        })
+     }else{
+//like
+        await post.findByIdAndUpdate(postId, {
+            $push:{likes:user.id},
+        });
+        //create notification if not liking own post
+        if ( post.user.toString() !== user.Id.toString()){
+            await Notification.create({
+                from:user._Id,
+                to:post.user,
+                type:"like",
+                post:postId
+            });
+        }
+     }
+     res.status(200).json({
+        message:isLiked ? "post unliked successfully " : "post liked successfully"
+     });
+});
+
+export const deletePost = asyncHandler(async (req, res)=> {
+    const userId = getauth(req);
+    const postId = req.params;
+
+    const user = await user.findOne({clerkId:userId});
+    const post = await post.findById(postId)
+    if (!user || !post)return res.status(404).json({error:"user or post not found"});
+    if (post.user.toString() !== user._Id.toString()){
+        return res.status(403).json({error:"you can only delete your own post"});
+    }
+    //delete all post
+     await comment.deleteMany({post:postId});
+
+     //delete a post
+     await post.findByIdAndDelete({postId});
+     res.status(200).json({message:"post deleted successfull"})
+});
