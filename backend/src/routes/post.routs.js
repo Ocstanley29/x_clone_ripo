@@ -7,7 +7,10 @@ import {
     getPosts,
      } from "../controllers/post.controller.js"
      import{protectRoute} from "../middleware/authentication.middleware.js"
-     import upload from ""
+     import upload from "../middleware/upload.middleware.js"
+
+     import notifications from "../models/notification.model.js"
+     import comment from "../models/coment.model.js"
 
 const router = express.Router();
 
