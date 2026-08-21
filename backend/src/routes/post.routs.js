@@ -22,6 +22,6 @@ router.get("/user/:username", getUserPosts);
 
 //protected routes
 
-router.post("/", protect)
+router.post("/", protectRoute)
 
 export default router

@@ -1,10 +1,10 @@
 import express from "express"
 import cors from 'cors'
-import {clerkMiddleware} from "@clerk/express"
+import {clerkMiddleware} from "clerk"
 const PORT = process.env.PORT ;
 import userRoutes from './routes/user.routes.js'
 import commentRoutes from "./routes/comments.routes.js"
-import notificationRoutes from "./routes/notification.js"
+//import notificationRoutes from "./routes/notification.js"
 import { arcjetMiddleware } from "./middleware/arcjet.middleware.js";
 
 import { ENV } from "./config/env.js";
@@ -19,7 +19,7 @@ app.use(arcjetMiddleware);
 app.use("/api/users", userRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/api/comments", commentRoutes);
-app.use("/api/notification", notificationRoutes)
+app.use("/api/notification", notificationRoutes);
 
 
 //error handling middlware
