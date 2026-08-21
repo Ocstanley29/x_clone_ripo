@@ -3,7 +3,9 @@ import cors from 'cors'
 import {clerkMiddleware} from "@clerk/express"
 const PORT = process.env.PORT ;
 import userRoutes from './routes/user.routes.js'
-import comment from "./routes/comments.routes.js"
+import commentRoutes from "./routes/comments.routes.js"
+import notificationRoutes from "./routes/notification.js"
+import { arcjetMiddleware } from "./middleware/arcjet.middleware.js";
 
 import { ENV } from "./config/env.js";
 import { connectDB } from "./config/db.js";
@@ -11,11 +13,15 @@ const app = express();
 app.use(cors())
 app.use(express.json());
 app.use(clerkMiddleware());
+app.use(arcjetMiddleware);
+
 
 
 app.use("/api/users", userRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/api/comments", commentRoutes);
+app.use("/api/notification", notificationRoutes)
+
 
 
 //error handling middlware
