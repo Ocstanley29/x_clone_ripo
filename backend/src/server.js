@@ -16,19 +16,16 @@ app.use(clerkMiddleware());
 app.use(arcjetMiddleware);
 
 
-
 app.use("/api/users", userRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/api/comments", commentRoutes);
 app.use("/api/notification", notificationRoutes)
 
 
-
 //error handling middlware
 
 app.use((err,req, res, next) => {
     console.error("unhandled error", err);res.status(500).json({err:err.message|| "internal server error"});
-
 });
 
 

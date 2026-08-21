@@ -26,14 +26,14 @@ export const getPosts = asyncHandler(async(req, res)=>{
 
 
 
-export const getPost = asyncHandler(async(req, res)=>{
+//export const getPost = asyncHandler(async(req, res)=>{
 
     
-})
+//})
 
-export const getUserPost = asyncHandler(async(req, res)=>{
+//export const getUserPost = asyncHandler(async(req, res)=>{
     
-})
+//})
 
 export const createPost = asyncHandler(async(req, res)=>{
     const {userId}=getAuth(req);
@@ -56,8 +56,8 @@ export const createPost = asyncHandler(async(req, res)=>{
                     {quality:"auto"},
                     {format:"auto"}
                 ],
-                imageUrl = uploadResponse.secure_Url;
-            })
+                imageUrl : uploadResponse.secure_Url
+            });
         } catch ( uploadError) {
             console.log("cloudinary upload error");
             return res.status(400 ).json({error:"fail to upload image"})
@@ -65,15 +65,13 @@ export const createPost = asyncHandler(async(req, res)=>{
         }
     }
     const post = await Post.create({
-        user= user._Id,
+        user: user._Id,
         content:content ||"",
         image:imageUrl, 
     });
 
-    res.status(201).json({post})
-    
-})
-
+    res.status(201).json(post)
+});
 
 export const likePost = asyncHandler(async (req ,res)=>{
     const {userId} =getAuth(req);
