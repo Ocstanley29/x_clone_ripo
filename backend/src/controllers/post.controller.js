@@ -3,37 +3,65 @@ import Post from "../models/post.model.js"
 import User from "../models/user.models.js"
 import getAuth from "@clerk/express"
 import cloudinary from "../config/cloudinary.js";
-
+import User from "../models/user.models.js";
 import Notification from "../models/notification.model.js"
 import comment from "../models/coment.model.js"
 
 
-
 export const getPosts = asyncHandler(async(req, res)=>{
-    const posts = await Post.find()
-    .sort({createdat: -1})
+    const {username} = req.params;
+    const user= await User.findOne({username})
+    if(!user) return res.status(404).json({error:"user not found"});
+    const post = await Post.find({user:user._Id})
+    .sort({createdAt: -1})
     .populate("user", "userName firstName lastName profilePicture")
     .populate({
         path:"comment",
         populate:{
-            path:"user",
-            select:"userName firstName lastName profilePicture"
+         path:"user",
+         select:"userName firstName lastName profilePicture"
         }
     });
     res.status(200).json({posts});
 });
 
+export const getPost = asyncHandler(async(req, res)=>{
+    const {postId }= req.params;
+    const post =await Post.findById(postId)
 
+    .populate("user", "userName firstName lastName profilePicture")
+    .populate({
+        path:"comment",
+        populate:{
+         path:"user",
+         select:"userName firstName lastName profilePicture"
+        },
+    });
+if (!post) return res.status(404).json({error:"post not found"})
+    res.status(200).json({posts})
 
+});
 
-//export const getPost = asyncHandler(async(req, res)=>{
+export const getUserPost = asyncHandler(async(req, res)=>{
+    const {username} = req.params;
+    const user = await user.findOne({username});
+    if (!user) return res.status(404).json({error: "user not found"})
 
+   const posts = await post.find({user:user._Id})
+
+    .sort({createdAt: -1})
+    .populate("user", "userName firstName lastName profilePicture")
+    .populate({
+        path:"comment",
+        populate:{
+         path:"user",
+         select:"userName firstName lastName profilePicture"
+        }
+    });
+ res.status(200).json({posts})
     
-//})
 
-//export const getUserPost = asyncHandler(async(req, res)=>{
-    
-//})
+})
 
 export const createPost = asyncHandler(async(req, res)=>{
     const {userId}=getAuth(req);

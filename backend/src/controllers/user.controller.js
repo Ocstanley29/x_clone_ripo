@@ -16,7 +16,7 @@ export const getUserProfile = asyncHandler(async(req, res)=>{
 });
 
 
-export const updateUserProfile = asyncHandler (async(req, res)=>{
+export const updateProfile = asyncHandler (async(req, res)=>{
     const  {userId} = getAuth(req);
     const user = User.findOneAndUpdate({clerkId:userId}, req.body,{new:true})
      if (!user){
@@ -24,6 +24,7 @@ export const updateUserProfile = asyncHandler (async(req, res)=>{
        }
         res.status (200).json({user});
 });
+
 
 export const syncUser = asyncHandler(async(req, res)=>{
    const {userId} = getAuth(req);
@@ -47,8 +48,6 @@ export const syncUser = asyncHandler(async(req, res)=>{
    const user = await User.create(userData);
    res.status(201).json({user,message:"user created successfully"});
 });
-
-
 
 
 export const getCurrentUser=asyncHandler(async(req, res)=>{

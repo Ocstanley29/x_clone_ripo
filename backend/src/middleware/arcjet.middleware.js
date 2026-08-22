@@ -18,7 +18,6 @@ export const arcjetMiddleware = async(req, res, next)=>{
                 return res.status(403).json({
                     error:"bot detected",
                     message : "access denied"
-
                 })
 
             }else{
