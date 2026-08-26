@@ -1,7 +1,7 @@
-import expressAsyncHandler from "express-async-handler";
+import asyncHandler from "express-async-handler";
 import Post from "../models/post.model.js"
 import User from "../models/user.models.js"
-import getAuth from "@clerk/express"
+import getAuth from "clerk/"
 import cloudinary from "../config/cloudinary.js";
 import User from "../models/user.models.js";
 import Notification from "../models/notification.model.js"
@@ -88,8 +88,7 @@ export const createPost = asyncHandler(async(req, res)=>{
             });
         } catch ( uploadError) {
             console.log("cloudinary upload error");
-            return res.status(400 ).json({error:"fail to upload image"})
-            
+            return res.status(400 ).json({error:"fail to upload image"});
         }
     }
     const post = await Post.create({
@@ -106,7 +105,7 @@ export const likePost = asyncHandler(async (req ,res)=>{
     const {postId} = req.params;
     const user = await user.findOne({clerkId: userId});
     const post = await post.findById({postId});
-    if (!user || !popst) return res.status(400).json({error:"user not found"});
+    if (!user || !post) return res.status(400).json({error:"user not found"});
 
 
     const isLiked = post.likes.include(user._Id);
@@ -136,7 +135,7 @@ export const likePost = asyncHandler(async (req ,res)=>{
 });
 
 export const deletePost = asyncHandler(async (req, res)=> {
-    const userId = getauth(req);
+    const userId = getAuth(req);
     const postId = req.params;
 
     const user = await user.findOne({clerkId:userId});

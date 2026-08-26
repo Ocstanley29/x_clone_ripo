@@ -4,7 +4,7 @@ import {clerkMiddleware} from "clerk"
 const PORT = process.env.PORT ;
 import userRoutes from './routes/user.routes.js'
 import commentRoutes from "./routes/comments.routes.js"
-//import notificationRoutes from "./routes/notification.js"
+import notificationRoutes from "./routes/notification.js"
 import { arcjetMiddleware } from "./middleware/arcjet.middleware.js";
 
 import { ENV } from "./config/env.js";
