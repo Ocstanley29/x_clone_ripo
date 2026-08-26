@@ -23,6 +23,6 @@ router.get("/user/:username", getUserPosts);
 
 //protected routes
 
-router.post("/", protectRoute, upload.single."{image}", createPost);
+router.post("/", protectRoute, upload.single("image"), createPost);
 
 export default router
